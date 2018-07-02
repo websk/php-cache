@@ -1,0 +1,10 @@
+{
+    "name": "websk/php-cache",
+    "require": {
+        "predis/predis": "1.*",
+        "websk/php-utils": "dev-master"
+    },
+    "autoload": {
+        "psr-4": { "": "src/" }
+    }
+}
