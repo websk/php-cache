@@ -6,19 +6,16 @@ use Websk\Utils\Assert;
 use Websk\Cache\CacheServerSettings;
 
 /**
- * Class Memcache
+ * Class Memcached
  * @package Websk\Cache\Engines
  */
-class Memcache implements CacheEngineInterface
+class Memcached implements CacheEngineInterface
 {
     use CacheKeyTrait;
 
-    const COMPRESS_THRESHOLD_VALUE = 5000;
-    const COMPRESS_THRESHOLD_MIN_SAVING = 0.2;
-
     /** @var CacheServerSettings[] */
     protected $cache_server_settings_arr = [];
-    /** @var \Memcache */
+    /** @var \Memcached */
     protected $connection;
     /** @var string */
     protected $cache_key_prefix = '';
@@ -37,10 +34,12 @@ class Memcache implements CacheEngineInterface
     /**
      * @param string $key
      * @param mixed $value
-     * @param int $ttl_sec Expiration time of the item. If it's equal to zero, the item will never expire.
-     * You can also use Unix timestamp or a number of seconds starting from current time,
-     * but in the latter case the number of seconds may not exceed 2592000 (30 days).
-     * @see http://php.net/manual/en/memcache.set.php
+     * @param int $ttl_sec Some storage commands involve sending an expiration value (relative to an item or to an operation requested by the client) to the server.
+     * In all such cases, the actual value sent may either be Unix time (number of seconds since January 1, 1970, as an integer),
+     * or a number of seconds starting from current time. In the latter case, this number of seconds may not exceed 60*60*24*30 (number of seconds in 30 days);
+     * if the expiration value is larger than that, the server will consider it to be real Unix time value rather than an offset from current time.
+     * If the expiration value is 0 (the default), the item never expires (although it may be deleted from the server to make place for other items).
+     * @see http://php.net/manual/en/memcached.expiration.php
      * @return bool
      */
     public function set(string $key, $value, int $ttl_sec = 0): bool
@@ -54,7 +53,7 @@ class Memcache implements CacheEngineInterface
         }
 
         $full_key = $this->getKey($key);
-        $result = $connection_obj->set($full_key, $value, MEMCACHE_COMPRESSED, $ttl_sec);
+        $result = $connection_obj->set($full_key, $value, $ttl_sec);
 
         return $result;
     }
@@ -63,6 +62,7 @@ class Memcache implements CacheEngineInterface
     public function get(string $key)
     {
         $connection_obj = $this->getConnectionObj();
+
         if (!$connection_obj) {
             return false;
         }
@@ -88,12 +88,12 @@ class Memcache implements CacheEngineInterface
     }
 
     /**
-     * @return \Memcache|null
+     * @return \Memcached|null
      * @throws \Exception
      */
-    public function getConnectionObj(): ?\Memcache
+    protected function getConnectionObj(): ?\Memcached
     {
-        if ($this->connection instanceof \Memcache) {
+        if ($this->connection instanceof \Memcached) {
             return $this->connection;
         }
 
@@ -101,12 +101,17 @@ class Memcache implements CacheEngineInterface
             return null;
         }
 
-        $this->connection = new \Memcache;
+        $this->connection = new \Memcached();
+        $this->connection->setOption(\Memcached::OPT_COMPRESSION, true);
+        $this->connection->setOption(\Memcached::OPT_DISTRIBUTION, \Memcached::DISTRIBUTION_CONSISTENT);
+        $this->connection->setOption(\Memcached::OPT_LIBKETAMA_COMPATIBLE, true);
 
+        $memcache_servers_arr = [];
         foreach ($this->cache_server_settings_arr as $server_settings_obj) {
-            Assert::assert($this->connection->addServer($server_settings_obj->getHost(), $server_settings_obj->getPort()));
-            $this->connection->setCompressThreshold(self::COMPRESS_THRESHOLD_VALUE, self::COMPRESS_THRESHOLD_MIN_SAVING);
+            $memcache_servers_arr[] = [$server_settings_obj->getHost(), $server_settings_obj->getPort()];
         }
+
+        Assert::assert($this->connection->addServers($memcache_servers_arr));
 
         return $this->connection;
     }

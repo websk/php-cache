@@ -1,12 +1,21 @@
 <?php
 
-namespace WebSK\Cache\Engines;
+namespace Websk\Cache\Engines;
 
+use Websk\Utils\Assert;
 use Predis\Client;
-use WebSK\Cache\CacheServerSettings;
+use Websk\Cache\CacheServerSettings;
 
+/**
+ * Class Redis
+ * @package Websk\Cache\Engines
+ */
 class Redis implements CacheEngineInterface
 {
+    use CacheKeyTrait;
+
+    const CONNECTION_SCHEME_TCP = 'tcp';
+
     /** @var CacheServerSettings[] */
     protected $cache_server_settings_arr = [];
     /** @var Client */
@@ -30,61 +39,42 @@ class Redis implements CacheEngineInterface
     }
 
 
-    /**
-     * @param $key
-     * @param $value
-     * @param $ttl_secs
-     * @return bool
-     */
-    public function set($key, $value, $ttl_secs)
+    /** @inheritdoc */
+    public function set(string $key, $value, int $ttl_sec = 0): bool
     {
-        if ($ttl_secs == -1) {
-            $ttl_secs = 60;
-        }
+        Assert::assert($ttl_sec >= 0);
 
-        if ($ttl_secs < 0) {
-            $ttl_secs = 0;
-        }
-
-        if ($ttl_secs == 0) {
-            return true;
-        }
-
-        $redis_connection_obj = $this->getRedisConnectionObj(); // do not check result - already checked
-        if (!$redis_connection_obj) {
+        $connection_obj = $this->getConnectionObj();
+        if (!$connection_obj) {
             return false;
         }
 
         $full_key = $this->getKey($key);
         $value_ser = serialize($value);
 
-        if ($ttl_secs > 0) {
-            $mcs_result = $redis_connection_obj->setex($full_key, $ttl_secs, $value_ser);
+        if ($ttl_sec > 0) {
+            $result = $connection_obj->setex($full_key, $ttl_sec, $value_ser);
         } else {
-            $mcs_result = $redis_connection_obj->set($full_key, $value_ser);
+            $result = $connection_obj->set($full_key, $value_ser);
         }
 
-        if (!$mcs_result) {
+        if (!$result) {
             return false;
         }
 
         return true;
     }
 
-    /**
-     * returns false if key not found
-     * @param $key
-     * @return mixed
-     */
-    public function get($key)
+    /** @inheritdoc */
+    public function get(string $key)
     {
-        $redis_connection_obj = $this->getRedisConnectionObj();
-        if (!$redis_connection_obj) {
+        $connection_obj = $this->getConnectionObj();
+        if (!$connection_obj) {
             return false;
         }
 
         $full_key = $this->getKey($key);
-        $result = $redis_connection_obj->get($full_key);
+        $result = $connection_obj->get($full_key);
 
         if ($result === false) {
             return false;
@@ -95,41 +85,41 @@ class Redis implements CacheEngineInterface
         return $result;
     }
 
-    /**
-     * @param $key
-     * @return bool|int
-     */
-    public function delete($key)
+    /** @inheritdoc */
+    public function delete(string $key): bool
     {
-        $redis_connection_obj = $this->getRedisConnectionObj();
-        if (!$redis_connection_obj) {
+        $connection_obj = $this->getConnectionObj();
+        if (!$connection_obj) {
             return false;
         }
 
         $full_key = $this->getKey($key);
-        return $redis_connection_obj->del($full_key);
+        $result = $connection_obj->del([$full_key]);
+
+        if (!$result) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
      * @return null|Client
      */
-    public function getRedisConnectionObj()
+    protected function getConnectionObj(): ?Client
     {
-        $redis = null;
-
-        if (isset($this->connection)) {
+        if ($this->connection instanceof Client) {
             return $this->connection;
         }
 
-        $redis_servers = $this->cache_server_settings_arr;
-        if (empty($redis_servers)) {
+        if (empty($this->cache_server_settings_arr)) {
             return null;
         }
 
         $servers_arr = [];
-        foreach ($redis_servers as $server_settings_obj) {
+        foreach ($this->cache_server_settings_arr as $server_settings_obj) {
             $servers_arr[] = [
-                'scheme' => 'tcp',
+                'scheme' => self::CONNECTION_SCHEME_TCP,
                 'host' => $server_settings_obj->getHost(),
                 'port' => $server_settings_obj->getPort()
             ];
@@ -138,21 +128,5 @@ class Redis implements CacheEngineInterface
         $this->connection = new Client($servers_arr, $this->params_arr);
 
         return $this->connection;
-    }
-
-    /**
-     * @param $key
-     * @return string
-     */
-    public function getKey($key)
-    {
-        $prefix = $this->cache_key_prefix;
-        if ($prefix == '') {
-            $prefix = 'default';
-        }
-
-        $full_key = $prefix . '-' . $key;
-
-        return md5($full_key);
     }
 }

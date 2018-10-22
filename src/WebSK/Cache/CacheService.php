@@ -4,6 +4,10 @@ namespace WebSK\Cache;
 
 use WebSK\Cache\Engines\CacheEngineInterface;
 
+/**
+ * Class CacheService
+ * @package Websk\Cache
+ */
 class CacheService
 {
     /** @var CacheEngineInterface */
@@ -20,13 +24,23 @@ class CacheService
         $this->cache_engine = $cache_engine;
     }
 
-    public function set($key, $value, $expire = -1)
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @param int $ttl_sec
+     * @return bool
+     */
+    public function set(string $key, $value, int $ttl_sec = 0): bool
     {
         $this->storage_arr[$key] = $value;
-        return $this->cache_engine->set($key, $value, $expire);
+        return $this->cache_engine->set($key, $value, $ttl_sec);
     }
 
-    public function get($key)
+    /**
+     * @param string $key
+     * @return mixed
+     */
+    public function get(string $key)
     {
         if (isset($this->storage_arr[$key])) {
             return $this->storage_arr[$key];
@@ -41,9 +55,18 @@ class CacheService
         return $value;
     }
 
-    public function delete($key)
+    /**
+     * @param string $key
+     * @return bool
+     */
+    public function delete(string $key): bool
     {
         unset($this->storage_arr[$key]);
         return $this->cache_engine->delete($key);
+    }
+
+    public function flushStaticCache(): void
+    {
+        $this->storage_arr = [];
     }
 }
