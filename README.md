@@ -22,6 +22,10 @@ $config = [
 ## Registering a service
 
 ```
+/**
+ * @param ContainerInterface $container
+ * @return CacheService
+ */
 $container['cache_service'] = function (ContainerInterface $container) {
     $cache_config = $container["settings"]["cache"];
     
