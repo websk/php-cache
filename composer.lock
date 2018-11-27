@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "35771a53501320a0d90b5edb200855a2",
+    "content-hash": "f09141bc23b60f64a5c20a2a1bdda8c2",
     "packages": [
         {
             "name": "predis/predis",
@@ -57,17 +57,66 @@
             "time": "2016-06-16T16:22:20+00:00"
         },
         {
+            "name": "psr/container",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/container.git",
+                "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/container/zipball/b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
+                "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Container\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common Container Interface (PHP FIG PSR-11)",
+            "homepage": "https://github.com/php-fig/container",
+            "keywords": [
+                "PSR-11",
+                "container",
+                "container-interface",
+                "container-interop",
+                "psr"
+            ],
+            "time": "2017-02-14T16:28:37+00:00"
+        },
+        {
             "name": "websk/php-utils",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websk/php-utils.git",
-                "reference": "e5c29b800bb277f50858d99239ae814ac85f832d"
+                "reference": "19f497d54d15e2c3195f4cccd82b659457cc9873"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websk/php-utils/zipball/e5c29b800bb277f50858d99239ae814ac85f832d",
-                "reference": "e5c29b800bb277f50858d99239ae814ac85f832d",
+                "url": "https://api.github.com/repos/websk/php-utils/zipball/19f497d54d15e2c3195f4cccd82b659457cc9873",
+                "reference": "19f497d54d15e2c3195f4cccd82b659457cc9873",
                 "shasum": ""
             },
             "type": "library",
@@ -77,7 +126,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2018-07-02T14:12:58+00:00"
+            "time": "2018-11-22T11:08:45+00:00"
         }
     ],
     "packages-dev": [],

@@ -2,6 +2,10 @@
 
 namespace WebSK\Cache;
 
+/**
+ * Class CacheServerSettings
+ * @package WebSK\Cache
+ */
 class CacheServerSettings
 {
     protected $host;
