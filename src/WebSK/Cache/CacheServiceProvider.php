@@ -38,4 +38,13 @@ class CacheServiceProvider
             return new CacheService($cache_engine);
         };
     }
+
+    /**
+     * @param ContainerInterface $container
+     * @return CacheService
+     */
+    public static function getCacheService(ContainerInterface $container)
+    {
+        return $container->get(self::SERVICE_CONTAINER_ID);
+    }
 }
