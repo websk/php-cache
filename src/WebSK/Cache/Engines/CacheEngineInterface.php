@@ -1,10 +1,10 @@
 <?php
 
-namespace Websk\Cache\Engines;
+namespace WebSK\Cache\Engines;
 
 /**
  * Interface CacheEngineInterface
- * @package Websk\Cache\Engines
+ * @package WebSK\Cache\Engines
  */
 interface CacheEngineInterface
 {

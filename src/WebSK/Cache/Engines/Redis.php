@@ -1,14 +1,14 @@
 <?php
 
-namespace Websk\Cache\Engines;
+namespace WebSK\Cache\Engines;
 
-use Websk\Utils\Assert;
+use WebSK\Utils\Assert;
 use Predis\Client;
-use Websk\Cache\CacheServerSettings;
+use WebSK\Cache\CacheServerSettings;
 
 /**
  * Class Redis
- * @package Websk\Cache\Engines
+ * @package WebSK\Cache\Engines
  */
 class Redis implements CacheEngineInterface
 {

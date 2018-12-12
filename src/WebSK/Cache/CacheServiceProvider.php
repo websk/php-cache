@@ -3,7 +3,7 @@
 namespace WebSK\Cache;
 
 use Psr\Container\ContainerInterface;
-use Websk\Cache\Engines\CacheEngineInterface;
+use WebSK\Cache\Engines\CacheEngineInterface;
 
 /**
  * Class CacheServiceProvider

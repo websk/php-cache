@@ -6,7 +6,7 @@ use WebSK\Cache\Engines\CacheEngineInterface;
 
 /**
  * Class CacheService
- * @package Websk\Cache
+ * @package WebSK\Cache
  */
 class CacheService
 {

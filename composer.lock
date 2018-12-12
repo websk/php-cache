@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "bc5ebbb61369f82309fa2da607f59f9c",
+    "content-hash": "dc7bd01543fce09f232e7910dbe3fc26",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -403,17 +403,42 @@
             "time": "2018-09-16T10:54:21+00:00"
         },
         {
-            "name": "websk/php-slim",
-            "version": "dev-master",
+            "name": "websk/php-config",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/websk/php-slim.git",
-                "reference": "47d2316e29daecca86a1bc2f992878a1d39ea937"
+                "url": "https://github.com/websk/php-config.git",
+                "reference": "806f75eafc1536c2543f383875503f12c72bcfe3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websk/php-slim/zipball/47d2316e29daecca86a1bc2f992878a1d39ea937",
-                "reference": "47d2316e29daecca86a1bc2f992878a1d39ea937",
+                "url": "https://api.github.com/repos/websk/php-config/zipball/806f75eafc1536c2543f383875503f12c72bcfe3",
+                "reference": "806f75eafc1536c2543f383875503f12c72bcfe3",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "PHP configs wrapper",
+            "homepage": "https://websk.ru/",
+            "time": "2018-12-03T15:24:53+00:00"
+        },
+        {
+            "name": "websk/php-slim",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/websk/php-slim.git",
+                "reference": "c10087e9b253ff2b7a0b04d1c72cade33800c06e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/websk/php-slim/zipball/c10087e9b253ff2b7a0b04d1c72cade33800c06e",
+                "reference": "c10087e9b253ff2b7a0b04d1c72cade33800c06e",
                 "shasum": ""
             },
             "require": {
@@ -429,21 +454,24 @@
             "notification-url": "https://packagist.org/downloads/",
             "description": "Slim framework utils",
             "homepage": "https://websk.ru/",
-            "time": "2018-11-22T12:13:57+00:00"
+            "time": "2018-11-30T11:48:41+00:00"
         },
         {
             "name": "websk/php-utils",
-            "version": "dev-master",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websk/php-utils.git",
-                "reference": "19f497d54d15e2c3195f4cccd82b659457cc9873"
+                "reference": "e6a4861c8a918fb9953b0c4e46072d765fbd592b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websk/php-utils/zipball/19f497d54d15e2c3195f4cccd82b659457cc9873",
-                "reference": "19f497d54d15e2c3195f4cccd82b659457cc9873",
+                "url": "https://api.github.com/repos/websk/php-utils/zipball/e6a4861c8a918fb9953b0c4e46072d765fbd592b",
+                "reference": "e6a4861c8a918fb9953b0c4e46072d765fbd592b",
                 "shasum": ""
+            },
+            "require": {
+                "websk/php-config": "1.0.*"
             },
             "type": "library",
             "autoload": {
@@ -452,16 +480,13 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2018-11-22T11:08:45+00:00"
+            "time": "2018-12-10T19:13:25+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "websk/php-utils": 20,
-        "websk/php-slim": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

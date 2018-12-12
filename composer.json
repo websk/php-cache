@@ -2,8 +2,8 @@
   "name": "websk/php-cache",
   "require": {
     "predis/predis": "1.*",
-    "websk/php-utils": "dev-master",
-    "websk/php-slim": "dev-master",
+    "websk/php-utils": "1.0.*",
+    "websk/php-slim": "1.0.*",
     "psr/container": "^1.0"
   },
   "autoload": {

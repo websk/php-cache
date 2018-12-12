@@ -1,12 +1,12 @@
 <?php
 
-namespace Websk\Cache;
+namespace WebSK\Cache;
 
-use Websk\Slim\Container;
+use WebSK\Slim\Container;
 
 /**
  * Class CacheWrapper
- * @package Websk\Skif
+ * @package WebSK\Skif
  */
 class CacheWrapper
 {

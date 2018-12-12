@@ -1,13 +1,13 @@
 <?php
 
-namespace Websk\Cache\Engines;
+namespace WebSK\Cache\Engines;
 
-use Websk\Utils\Assert;
-use Websk\Cache\CacheServerSettings;
+use WebSK\Utils\Assert;
+use WebSK\Cache\CacheServerSettings;
 
 /**
  * Class Memcache
- * @package Websk\Cache\Engines
+ * @package WebSK\Cache\Engines
  */
 class Memcache implements CacheEngineInterface
 {
