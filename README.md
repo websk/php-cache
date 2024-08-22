@@ -1,5 +1,7 @@
 # WebSK php-cache
 
+Optional support Memcache, Memcached, Redis
+
 ## Configuration example
 
 ```

@@ -10,13 +10,12 @@ use WebSK\Slim\Container;
  */
 class CacheWrapper
 {
-    /** @var array */
-    protected static $storage_arr = [];
+    protected static array $storage_arr = [];
 
     /**
      * @return CacheService
      */
-    public static function getCacheService()
+    public static function getCacheService(): CacheService
     {
         $container = Container::self();
 
@@ -37,30 +36,30 @@ class CacheWrapper
      * @param $key
      * @return bool
      */
-    public static function delete($key)
+    public static function delete($key): bool
     {
         return self::getCacheService()->delete($key);
     }
 
     /**
-     * @param $key
+     * @param string $key
      * @param $value
      * @param int $expire
      * @return bool
      * @throws \Exception
      */
-    public static function set($key, $value, $expire = 0)
+    public static function set(string $key, $value, int $expire = 0)
     {
         return self::getCacheService()->set($key, $value, $expire);
     }
 
     /**
      * Обновляет время жизни кеша
-     * @param $cache_key
-     * @param $expire
+     * @param string $cache_key
+     * @param int $expire
      * @throws \Exception
      */
-    public static function updateExpireByCacheKey($cache_key, $expire)
+    public static function updateExpireByCacheKey(string $cache_key, int $expire)
     {
         $cached = self::get($cache_key);
         if ($cached !== false) {

@@ -10,10 +10,9 @@ use WebSK\Cache\Engines\CacheEngineInterface;
  */
 class CacheService
 {
-    /** @var CacheEngineInterface */
-    protected $cache_engine;
-    /** @var array */
-    protected $storage_arr = [];
+    protected CacheEngineInterface $cache_engine;
+
+    protected array $storage_arr = [];
 
     /**
      * CacheService constructor.

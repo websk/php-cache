@@ -8,10 +8,10 @@ namespace WebSK\Cache;
  */
 class CacheServerSettings
 {
-    protected $host;
-    protected $port;
+    protected string $host;
+    protected int $port;
 
-    public function __construct($host, $port)
+    public function __construct(string $host, int $port)
     {
         $this->setHost($host);
         $this->setPort($port);
@@ -20,7 +20,7 @@ class CacheServerSettings
     /**
      * @return string
      */
-    public function getHost()
+    public function getHost(): string
     {
         return $this->host;
     }
@@ -28,23 +28,23 @@ class CacheServerSettings
     /**
      * @param string $host
      */
-    public function setHost($host)
+    public function setHost(string $host)
     {
         $this->host = $host;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getPort()
+    public function getPort(): int
     {
         return $this->port;
     }
 
     /**
-     * @param string $port
+     * @param int $port
      */
-    public function setPort($port)
+    public function setPort(int $port)
     {
         $this->port = $port;
     }

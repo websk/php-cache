@@ -14,11 +14,11 @@ class Memcached implements CacheEngineInterface
     use CacheKeyTrait;
 
     /** @var CacheServerSettings[] */
-    protected $cache_server_settings_arr = [];
-    /** @var \Memcached */
-    protected $connection;
-    /** @var string */
-    protected $cache_key_prefix = '';
+    protected array $cache_server_settings_arr = [];
+
+    protected \Memcached $connection;
+
+    protected string $cache_key_prefix = '';
 
     /**
      * Memcache constructor.

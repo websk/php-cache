@@ -11,8 +11,8 @@ use WebSK\Cache\Engines\CacheEngineInterface;
  */
 class CacheServiceProvider
 {
-    const SERVICE_CONTAINER_ID = 'cache.cache_service';
-    const SETTINGS_CONTAINER_ID = 'settings';
+    const string SERVICE_CONTAINER_ID = 'cache.cache_service';
+    const string SETTINGS_CONTAINER_ID = 'settings';
 
     /**
      * @param ContainerInterface $container
@@ -43,7 +43,7 @@ class CacheServiceProvider
      * @param ContainerInterface $container
      * @return CacheService
      */
-    public static function getCacheService(ContainerInterface $container)
+    public static function getCacheService(ContainerInterface $container): CacheService
     {
         return $container->get(self::SERVICE_CONTAINER_ID);
     }

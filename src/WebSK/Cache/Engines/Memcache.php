@@ -13,15 +13,15 @@ class Memcache implements CacheEngineInterface
 {
     use CacheKeyTrait;
 
-    const COMPRESS_THRESHOLD_VALUE = 5000;
-    const COMPRESS_THRESHOLD_MIN_SAVING = 0.2;
+    const int COMPRESS_THRESHOLD_VALUE = 5000;
+    const float COMPRESS_THRESHOLD_MIN_SAVING = 0.2;
 
     /** @var CacheServerSettings[] */
-    protected $cache_server_settings_arr = [];
-    /** @var \Memcache */
-    protected $connection;
-    /** @var string */
-    protected $cache_key_prefix = '';
+    protected array $cache_server_settings_arr = [];
+
+    protected \Memcache $connection;
+
+    protected string $cache_key_prefix = '';
 
     /**
      * Memcache constructor.

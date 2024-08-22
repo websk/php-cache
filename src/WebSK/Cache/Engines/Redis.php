@@ -14,16 +14,13 @@ class Redis implements CacheEngineInterface
 {
     use CacheKeyTrait;
 
-    const CONNECTION_SCHEME_TCP = 'tcp';
+    const string CONNECTION_SCHEME_TCP = 'tcp';
 
     /** @var CacheServerSettings[] */
-    protected $cache_server_settings_arr = [];
-    /** @var Client */
-    protected $connection;
-    /** @var array */
-    protected $params_arr = [];
-    /** @var string */
-    protected $cache_key_prefix = '';
+    protected array $cache_server_settings_arr = [];
+    protected Client $connection;
+    protected array $params_arr = [];
+    protected string $cache_key_prefix = '';
 
     /**
      * Redis constructor.
