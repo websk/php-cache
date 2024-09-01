@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0e4825b7784dafee7d5731aafa844d3e",
+    "content-hash": "76d8fafa64f78b32fdf1253bc44507e4",
     "packages": [
         {
             "name": "nikic/fast-route",
@@ -646,22 +646,23 @@
         },
         {
             "name": "websk/php-slim",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websk/php-slim.git",
-                "reference": "7723e670625a4ce0c00737c7d4dd68fb407a1a12"
+                "reference": "11e513ef7646662aef08a2d1d839768c656364fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websk/php-slim/zipball/7723e670625a4ce0c00737c7d4dd68fb407a1a12",
-                "reference": "7723e670625a4ce0c00737c7d4dd68fb407a1a12",
+                "url": "https://api.github.com/repos/websk/php-slim/zipball/11e513ef7646662aef08a2d1d839768c656364fb",
+                "reference": "11e513ef7646662aef08a2d1d839768c656364fb",
                 "shasum": ""
             },
             "require": {
                 "php": "^8.3",
                 "slim/php-view": "3.2.0",
-                "slim/slim": "4.14.*"
+                "slim/slim": "4.14.*",
+                "websk/php-utils": "2.0.*"
             },
             "type": "library",
             "autoload": {
@@ -674,9 +675,9 @@
             "homepage": "https://websk.ru/",
             "support": {
                 "issues": "https://github.com/websk/php-slim/issues",
-                "source": "https://github.com/websk/php-slim/tree/2.0.0"
+                "source": "https://github.com/websk/php-slim/tree/2.1.0"
             },
-            "time": "2024-08-08T08:12:59+00:00"
+            "time": "2024-09-01T12:30:44+00:00"
         },
         {
             "name": "websk/php-utils",

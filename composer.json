@@ -4,7 +4,7 @@
     "php": "^8.3",
     "predis/predis": "1.*",
     "websk/php-utils": "2.0.*",
-    "websk/php-slim": "2.0.*",
+    "websk/php-slim": "2.1.*",
     "psr/container": "^1.0"
   },
   "autoload": {
