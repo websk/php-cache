@@ -49,7 +49,7 @@ class Memcached implements CacheEngineInterface
             );
         }
 
-        if ($ttl_sec <= 60 * 60 * 24 * 30) {
+        if ($ttl_sec >= 60 * 60 * 24 * 30) {
             throw new \Exception(
                 'ttl_sec cannot be more than a 30 days'
             );
