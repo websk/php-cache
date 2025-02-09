@@ -2,7 +2,6 @@
 
 namespace WebSK\Cache\Engines;
 
-use WebSK\Utils\Assert;
 use WebSK\Cache\CacheServerSettings;
 
 /**
@@ -16,7 +15,7 @@ class Memcached implements CacheEngineInterface
     /** @var CacheServerSettings[] */
     protected array $cache_server_settings_arr = [];
 
-    protected \Memcached $connection;
+    protected ?\Memcached $connection = null;
 
     protected string $cache_key_prefix = '';
 
@@ -42,10 +41,19 @@ class Memcached implements CacheEngineInterface
      * @see http://php.net/manual/en/memcached.expiration.php
      * @return bool
      */
-    public function set(string $key, $value, int $ttl_sec = 0): bool
+    public function set(string $key, mixed $value, int $ttl_sec = 0): bool
     {
-        Assert::assert($ttl_sec >= 0);
-        Assert::assert($ttl_sec < 60 * 60 * 30 * 24);
+        if ($ttl_sec < 0) {
+            throw new \Exception(
+                'ttl_sec can`t be less than 0'
+            );
+        }
+
+        if ($ttl_sec <= 60 * 60 * 24 * 30) {
+            throw new \Exception(
+                'ttl_sec cannot be more than a 30 days'
+            );
+        }
 
         $connection_obj = $this->getConnectionObj();
         if (!$connection_obj) {
@@ -53,13 +61,12 @@ class Memcached implements CacheEngineInterface
         }
 
         $full_key = $this->getKey($key);
-        $result = $connection_obj->set($full_key, $value, $ttl_sec);
 
-        return $result;
+        return $connection_obj->set($full_key, $value, $ttl_sec);
     }
 
     /** @inheritdoc */
-    public function get(string $key)
+    public function get(string $key): mixed
     {
         $connection_obj = $this->getConnectionObj();
 
@@ -68,9 +75,8 @@ class Memcached implements CacheEngineInterface
         }
 
         $full_key = $this->getKey($key);
-        $result = $connection_obj->get($full_key);
 
-        return $result;
+        return $connection_obj->get($full_key);
     }
 
     /** @inheritdoc */
@@ -82,9 +88,8 @@ class Memcached implements CacheEngineInterface
         }
 
         $full_key = $this->getKey($key);
-        $result = $connection_obj->delete($full_key);
 
-        return $result;
+        return $connection_obj->delete($full_key);
     }
 
     /**
@@ -106,12 +111,16 @@ class Memcached implements CacheEngineInterface
         $this->connection->setOption(\Memcached::OPT_DISTRIBUTION, \Memcached::DISTRIBUTION_CONSISTENT);
         $this->connection->setOption(\Memcached::OPT_LIBKETAMA_COMPATIBLE, true);
 
-        $memcache_servers_arr = [];
+        $memcached_servers_arr = [];
         foreach ($this->cache_server_settings_arr as $server_settings_obj) {
-            $memcache_servers_arr[] = [$server_settings_obj->getHost(), $server_settings_obj->getPort()];
+            $memcached_servers_arr[] = [$server_settings_obj->getHost(), $server_settings_obj->getPort()];
         }
 
-        Assert::assert($this->connection->addServers($memcache_servers_arr));
+        if (!$this->connection->addServers($memcached_servers_arr)) {
+            throw new \Exception(
+                'Unable to add memcached servers'
+            );
+        }
 
         return $this->connection;
     }

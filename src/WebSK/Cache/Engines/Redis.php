@@ -2,7 +2,6 @@
 
 namespace WebSK\Cache\Engines;
 
-use WebSK\Utils\Assert;
 use Predis\Client;
 use WebSK\Cache\CacheServerSettings;
 
@@ -18,7 +17,7 @@ class Redis implements CacheEngineInterface
 
     /** @var CacheServerSettings[] */
     protected array $cache_server_settings_arr = [];
-    protected Client $connection;
+    protected ?Client $connection = null;
     protected array $params_arr = [];
     protected string $cache_key_prefix = '';
 
@@ -37,9 +36,13 @@ class Redis implements CacheEngineInterface
 
 
     /** @inheritdoc */
-    public function set(string $key, $value, int $ttl_sec = 0): bool
+    public function set(string $key, mixed $value, int $ttl_sec = 0): bool
     {
-        Assert::assert($ttl_sec >= 0);
+        if ($ttl_sec < 0) {
+            throw new \Exception(
+                'ttl_sec can`t be less than 0'
+            );
+        }
 
         $connection_obj = $this->getConnectionObj();
         if (!$connection_obj) {
@@ -63,7 +66,7 @@ class Redis implements CacheEngineInterface
     }
 
     /** @inheritdoc */
-    public function get(string $key)
+    public function get(string $key): mixed
     {
         $connection_obj = $this->getConnectionObj();
         if (!$connection_obj) {
@@ -77,9 +80,7 @@ class Redis implements CacheEngineInterface
             return false;
         }
 
-        $result = unserialize($result);
-
-        return $result;
+        return unserialize($result);
     }
 
     /** @inheritdoc */

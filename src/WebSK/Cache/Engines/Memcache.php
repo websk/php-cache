@@ -2,7 +2,6 @@
 
 namespace WebSK\Cache\Engines;
 
-use WebSK\Utils\Assert;
 use WebSK\Cache\CacheServerSettings;
 
 /**
@@ -19,7 +18,7 @@ class Memcache implements CacheEngineInterface
     /** @var CacheServerSettings[] */
     protected array $cache_server_settings_arr = [];
 
-    protected \Memcache $connection;
+    protected ?\Memcache $connection = null;
 
     protected string $cache_key_prefix = '';
 
@@ -43,10 +42,20 @@ class Memcache implements CacheEngineInterface
      * @see http://php.net/manual/en/memcache.set.php
      * @return bool
      */
-    public function set(string $key, $value, int $ttl_sec = 0): bool
+    public function set(string $key, mixed $value, int $ttl_sec = 0): bool
     {
-        Assert::assert($ttl_sec >= 0);
-        Assert::assert($ttl_sec < 60 * 60 * 30 * 24);
+
+        if ($ttl_sec < 0) {
+            throw new \Exception(
+                'ttl_sec can`t be less than 0'
+            );
+        }
+
+        if ($ttl_sec <= 60 * 60 * 24 * 30) {
+            throw new \Exception(
+                'ttl_sec cannot be more than a 30 days'
+            );
+        }
 
         $connection_obj = $this->getConnectionObj();
         if (!$connection_obj) {
@@ -60,7 +69,7 @@ class Memcache implements CacheEngineInterface
     }
 
     /** @inheritdoc */
-    public function get(string $key)
+    public function get(string $key): mixed
     {
         $connection_obj = $this->getConnectionObj();
         if (!$connection_obj) {
@@ -68,9 +77,8 @@ class Memcache implements CacheEngineInterface
         }
 
         $full_key = $this->getKey($key);
-        $result = $connection_obj->get($full_key);
 
-        return $result;
+        return $connection_obj->get($full_key);
     }
 
     /** @inheritdoc */
@@ -82,9 +90,8 @@ class Memcache implements CacheEngineInterface
         }
 
         $full_key = $this->getKey($key);
-        $result = $connection_obj->delete($full_key);
 
-        return $result;
+        return $connection_obj->delete($full_key);
     }
 
     /**
@@ -104,7 +111,12 @@ class Memcache implements CacheEngineInterface
         $this->connection = new \Memcache;
 
         foreach ($this->cache_server_settings_arr as $server_settings_obj) {
-            Assert::assert($this->connection->addServer($server_settings_obj->getHost(), $server_settings_obj->getPort()));
+            if (!$this->connection->addServer($server_settings_obj->getHost(), $server_settings_obj->getPort())) {
+                throw new \Exception(
+                    'Unable to add memcache server ' . $server_settings_obj->getHost()
+                );
+            }
+
             $this->connection->setCompressThreshold(self::COMPRESS_THRESHOLD_VALUE, self::COMPRESS_THRESHOLD_MIN_SAVING);
         }
 

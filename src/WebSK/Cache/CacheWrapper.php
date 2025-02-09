@@ -2,7 +2,8 @@
 
 namespace WebSK\Cache;
 
-use WebSK\Slim\Container;
+
+use Psr\Container\ContainerInterface;
 
 /**
  * Class CacheWrapper
@@ -10,24 +11,28 @@ use WebSK\Slim\Container;
  */
 class CacheWrapper
 {
-    protected static array $storage_arr = [];
+
+    protected static ContainerInterface $container;
+
+    public static function setContainer(ContainerInterface $container): void
+    {
+        self::$container = $container;
+    }
 
     /**
      * @return CacheService
      */
     public static function getCacheService(): CacheService
     {
-        $container = Container::self();
-
         /** @var CacheService $cache_service */
-        return CacheServiceProvider::getCacheService($container);
+        return CacheServiceProvider::getCacheService(self::$container);
     }
 
     /**
      * @param $key
-     * @return bool|mixed
+     * @return mixed
      */
-    public static function get($key)
+    public static function get($key): mixed
     {
         return self::getCacheService()->get($key);
     }
@@ -48,7 +53,7 @@ class CacheWrapper
      * @return bool
      * @throws \Exception
      */
-    public static function set(string $key, $value, int $expire = 0)
+    public static function set(string $key, $value, int $expire = 0): bool
     {
         return self::getCacheService()->set($key, $value, $expire);
     }
@@ -59,7 +64,7 @@ class CacheWrapper
      * @param int $expire
      * @throws \Exception
      */
-    public static function updateExpireByCacheKey(string $cache_key, int $expire)
+    public static function updateExpireByCacheKey(string $cache_key, int $expire): void
     {
         $cached = self::get($cache_key);
         if ($cached !== false) {

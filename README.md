@@ -2,6 +2,16 @@
 
 Optional support Memcache, Memcached, Redis
 
+## Install
+
+https://packagist.org/packages/websk/php-cache
+
+install dependency using Composer
+
+```shell
+composer require websk/php-cache
+```
+
 ## Configuration example
 
 ```
@@ -9,7 +19,7 @@ $config = [
     'settings' => [
         'cache' => [
             'engine' => \WebSK\Cache\Engines\Memcache::class,
-            'cache_key_prefix' => 'skif',
+            'cache_key_prefix' => 'websk',
             'servers' => [
                 [
                     'host' => 'memcached',
